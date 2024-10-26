@@ -10,7 +10,7 @@ def greedy_algorithm(items, budget):
             total_cost += info['cost']
             total_calories += info['calories']
 
-    return selected_items, total_calories
+    return selected_items, total_calories, total_cost
 
 
 # Приклад використання
