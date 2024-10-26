@@ -18,14 +18,12 @@ def add_edges(graph, node, pos, x=0, y=0, layer=1):
         graph.add_node(node.id, color=node.color, label=node.val)
         if node.left:
             graph.add_edge(node.id, node.left.id)
-            l = x - 1 / 2 ** layer
-            pos[node.left.id] = (l, y - 1)
-            l = add_edges(graph, node.left, pos, x=l, y=y - 1, layer=layer + 1)
+            pos[node.left.id] = (x - 1 / 2 ** layer, y - 1)
+            add_edges(graph, node.left, pos, x=x - 1 / 2 ** layer, y=y - 1, layer=layer + 1)
         if node.right:
             graph.add_edge(node.id, node.right.id)
-            r = x + 1 / 2 ** layer
-            pos[node.right.id] = (r, y - 1)
-            r = add_edges(graph, node.right, pos, x=r, y=y - 1, layer=layer + 1)
+            pos[node.right.id] = (x + 1 / 2 ** layer, y - 1)
+            add_edges(graph, node.right, pos, x=x + 1 / 2 ** layer, y=y - 1, layer=layer + 1)
     return graph
 
 
@@ -94,24 +92,36 @@ def bfs(tree_root):
                 queue.append(node.right)
 
 
-# Створення дерева
+def reset_colors(node, default_color="#000000"):
+    if node is not None:
+        node.color = default_color
+        reset_colors(node.left, default_color)
+        reset_colors(node.right, default_color)
+
+
+# Создание дерева с большим количеством узлов
 root = Node(0)
 root.left = Node(4)
 root.left.left = Node(5)
 root.left.right = Node(10)
+root.left.left.left = Node(11)
+root.left.left.right = Node(12)
+root.left.right.left = Node(13)
+root.left.right.right = Node(14)
 root.right = Node(1)
 root.right.left = Node(3)
+root.right.right = Node(6)
+root.right.left.left = Node(7)
+root.right.left.right = Node(8)
+root.right.right.left = Node(9)
+root.right.right.right = Node(2)
 
 # Відображення обходу в глибину
 dfs(root)
 
+
 # Скидання кольорів для обходу в ширину
-root.color = "#000000"
-root.left.color = "#000000"
-root.left.left.color = "#000000"
-root.left.right.color = "#000000"
-root.right.color = "#000000"
-root.right.left.color = "#000000"
+reset_colors(root)
 
 # Відображення обходу в ширину
 bfs(root)
