@@ -31,6 +31,21 @@ def get_path(predecessors, target):
     return path[::-1]
 
 
+def visualize_graph(graph):
+    G = nx.Graph()
+    for u in graph.graph:
+        for v, weight in graph.graph[u]:
+            G.add_edge(u, v, weight=weight)
+
+    pos = nx.spring_layout(G)
+    edge_labels = nx.get_edge_attributes(G, 'weight')
+    nx.draw(G, pos, with_labels=True, node_color='lightblue', node_size=500, font_size=10, font_weight='bold')
+    nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels)
+
+    plt.title("Graph Visualization")
+    plt.show()
+
+
 g = Graph(9)
 g.add_edge(0, 1, 4)
 g.add_edge(0, 7, 8)
@@ -51,3 +66,5 @@ distances, predecessors = dijkstra(g, 0)
 for i, distance in enumerate(distances):
     path = get_path(predecessors, i)
     print(f"Відстань від вершини 0 до вершини {i}: {distance}, шлях: {path}")
+
+visualize_graph(g)
